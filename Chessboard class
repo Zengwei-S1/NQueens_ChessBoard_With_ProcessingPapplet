@@ -1,0 +1,129 @@
+import processing.core.PApplet;
+
+
+
+
+public class ChessBoard extends PApplet {
+    public int nCount; // how many boxes per row/col
+    public int boardSize; // how many pixels large
+
+
+
+
+    public int xPos; // top left corner of the chessboard
+    public int yPos;
+
+
+
+
+    public char[][] board; // 'Q' = Queen; '_' = empty
+    ChessBoardButton [][] chessBoard;
+    public ChessBoard() {
+    }
+    public ChessBoard(int nCount, int boardSize) {
+        xPos = 100;
+        yPos = 100;
+        this.nCount = nCount;
+        this.boardSize = boardSize;
+        int buttonSize = boardSize/nCount;
+        chessBoard = new ChessBoardButton[nCount][nCount];
+        for (int r = 0; r < nCount; r++) {
+            for (int c = 0; c < nCount; c++) {
+                chessBoard[c][r] = new ChessBoardButton(xPos + buttonSize * r,yPos + buttonSize * c, buttonSize, buttonSize, r, c);
+            }
+        }
+        board = new char[nCount][nCount];
+        reset();
+        print();
+    }
+    // returns whether the spot board[row, col] is safe from a Queen Q
+    public boolean isSafe(int row, int col){
+// checking the left for a queen
+        for (int c = col-1; c >= 0; c-- ){
+            if(board[row][c] == 'Q'){
+                return false;
+            }
+        }
+// checking the right for a queen
+        for (int c = col+1; c < nCount; c++ ){
+            if(board[row][c] == 'Q'){
+                return false;
+            }
+        }
+// checking the down for a queen
+        for (int r = row+1; r < nCount; r++ ){
+            if(board[r][col] == 'Q') {
+                return false;
+            }
+        }
+// checking the up for a queen
+        for (int r = row-1; r >= 0; r-- ){
+            if(board[r][col] == 'Q') {
+                return false;
+            }
+        }
+// multiVariable for loop
+//UpLeft
+        for(int r = row-1, c = col-1; r >= 0 && c >= 0; r--, c--){
+            if(board[r][c] == 'Q'){
+                return false;
+            }
+        }
+//UpRight
+        for(int r = row-1, c = col+1; r >= 0 && c < nCount; r--, c++){
+            if(board[r][c] == 'Q'){
+                return false;
+            }
+        }
+// downLeft
+        for(int r = row+1, c = col-1; r < nCount && c >= 0; r++, c--){
+            if(board[r][c] == 'Q'){
+                return false;
+            }
+        }
+// downRight
+        for(int r = row+1, c = col+1; r < nCount && c < nCount; r++, c++){
+            if(board[r][c] == 'Q'){
+                return false;
+            }
+        }
+        return true;
+    }
+    public void display(PApplet pa){
+        for(int r = 0; r<nCount; r++){
+            for(int c = 0; c<nCount; c++){
+                chessBoard[r][c].isSafe= true;
+                if(!isSafe(r,c)){
+                    chessBoard[r][c].isSafe= false;
+                }
+            }
+        }
+        for(ChessBoardButton [] rank: chessBoard){
+            for(ChessBoardButton thisChessBoardButton: rank){
+                thisChessBoardButton.display(pa, board);
+            }
+        }
+        print(); // print the char array
+        System.out.println();
+    }
+
+
+
+
+    public void reset(){
+        for (int r = 0; r < nCount; r++) {
+            for (int c = 0; c < nCount; c++) {
+                board[r][c] = '_';
+            }
+        }
+    }
+
+    public void print(){
+        for (int r = 0; r < nCount; r++) {
+            for (int c = 0; c < nCount; c++) {
+                System.out.print(board[r][c]+" ") ;
+            }
+            System.out.println();
+        }
+    }
+}
