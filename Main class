@@ -1,0 +1,33 @@
+import processing.core.PApplet;
+public class Main extends PApplet {
+    //Global Vars. Every method sees these variables
+    ChessBoard myBoard;
+    FunctionButton clearBoard;
+    public static void main(String[] args) {
+        PApplet.main("Main", args);
+    }
+    public void setup(){
+    }
+    public void settings(){
+        size(1000,800);
+        myBoard = new ChessBoard(8,600);
+        clearBoard = new FunctionButton(800,110,125,80,"Clear");
+    }
+    public void draw(){
+        myBoard.display(this);
+        clearBoard.display(this);
+    }
+
+    public void mouseReleased(){
+        for(ChessBoardButton [] rank: myBoard.chessBoard){
+            for(ChessBoardButton thisChessBoardButton: rank){
+                if(thisChessBoardButton.isOverButton(this)){
+                    thisChessBoardButton.isQueen = !thisChessBoardButton.isQueen;
+                }
+            }
+        }
+        if (clearBoard.isOverButton(this))
+            myBoard = new ChessBoard(8,600);
+    }
+}
+
