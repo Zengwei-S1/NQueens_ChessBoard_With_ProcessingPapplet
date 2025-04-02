@@ -1,0 +1,73 @@
+import processing.core.PApplet;
+public class ChessBoardButton extends Button{
+    public boolean isQueen;
+    public boolean isSafe;
+    public int rowIndex;
+    public int colIndex;
+
+    public ChessBoardButton() {
+        isQueen = false;
+    }
+
+    public ChessBoardButton(int xPos, int yPos, int wSize, int hSize) {
+        super(xPos, yPos, wSize, hSize);
+        isQueen = false;
+    }
+
+
+
+
+    // colIndex and rowIndex are passed in swapped order because when declared:
+// the xValue are columns and yValues are rows
+    public ChessBoardButton(int xPos, int yPos, int wSize, int hSize, int colIndex, int rowIndex) {
+        super(xPos, yPos, wSize, hSize);
+        this.rowIndex = rowIndex;
+        this.colIndex = colIndex;
+        isQueen = false;
+    }
+
+
+
+
+    // Displays this button on PApplet pa
+    public void display(PApplet pa, char board[][]){
+        if(pa.mousePressed && isOverButton(pa)) {
+//isQueen = !isQueen;
+            pa.fill(255, 0, 0);
+        }
+        else
+            pa.fill(255,255,255);
+
+        if((rowIndex+colIndex) % 2 == 0){
+            pa.fill(255,255,255,100);
+        }
+        else{
+            pa.fill(100,100,100,205);
+        }
+        // isSafe = !isSafe; // opposite????
+        if (!isSafe) {
+            if((rowIndex+colIndex) % 2 == 0)
+                pa.fill(255, 255, 0,50);
+            else{
+                pa.fill(200,200,0,25);
+            }
+        }
+
+        pa.rect(xPos-(wSize/2), yPos-(hSize/2), wSize, hSize);
+        if(isQueen){
+            board[rowIndex][colIndex] = 'Q';
+            pa.fill(0,0,0);
+            pa.textSize(hSize);
+            if(!isSafe ){
+                pa.fill(255,0,0);
+            }
+            pa.text("Q",xPos-wSize/3, yPos+hSize/4);
+        }
+
+        if(!isQueen){
+            isSafe = false;
+            board[rowIndex][colIndex] = '_';
+        }
+    }
+}
+
