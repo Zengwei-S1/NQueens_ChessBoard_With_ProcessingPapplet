@@ -1,0 +1,28 @@
+import processing.core.PApplet;
+public class FunctionButton extends Button{
+    public String text;
+    boolean isClicked;
+
+    public FunctionButton() {
+    }
+    public FunctionButton(int xPos, int yPos, int wSize, int hSize, String text) {
+        super(xPos, yPos, wSize, hSize);
+        this.text = text;
+    }
+    public void display(PApplet pa){
+        if(pa.mousePressed && isOverButton(pa)) {
+//isQueen = !isQueen;
+            pa.fill(255, 0, 0);
+
+
+        }
+        else
+            pa.fill(255,255,255);
+
+        pa.rect(xPos-(wSize/2), yPos-(hSize/2), wSize+60, hSize);
+        pa.fill(0,0,0);
+        pa.textSize(75);
+        pa.text(text,xPos-wSize/2, yPos-(hSize-100));
+    }
+
+}
